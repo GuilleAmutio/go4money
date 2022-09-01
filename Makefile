@@ -10,4 +10,7 @@ migrateup:
 migratedown:
 	migrate -path db/migration -database "postgresql://postgres:mysecretpassword@localhost:5432/go4money?sslmode=disable" -verbose down
 
-.PHONY.: postgres createdb dropdb migrateup migratedown
+sqlc:
+	sqlc generate
+
+.PHONY.: postgres createdb dropdb migrateup migratedown sqlc

@@ -1,0 +1,21 @@
+# Migrations
+
+The database used is PostgreSQL. The schema will be generated using https://dbdiagram.io[dbdiagram.io].
+
+To generate the migrations we will use https://github.com/golang-migrate/migrate[Go Migrate].
+
+The ORM used will be SQLC, however GORM and SQLX is a great alternative
+
+## SQLC
+
+The GitHub repository of SQLC can be found https://github.com/kyleconroy/sqlc[here].
+
+* Execute `sqlc init`, it will generate a YAML file
+* Configure the settings of the YAML. See the Getting started chapter at the GitHub docs
+* Create query and sqlc folders
+* Define the queries inside the query folder
+* Run `sqlc generate`
+* This command will generate:
+** `models.go` file, with the tables definition
+** `db.go` file, dbtx interface
+** `<tableName>.sql.go`, queries translated to Go language
