@@ -19,3 +19,9 @@ The GitHub repository of SQLC can be found https://github.com/kyleconroy/sqlc[he
 ** `models.go` file, with the tables definition
 ** `db.go` file, dbtx interface
 ** `<tableName>.sql.go`, queries translated to Go language
+
+## Database unit tests
+
+In Go, test are defined by adding `_test` at the end of the name of the file. The `main_test.go` is where the connection to the database is defined. Also, the line `os.Exit(m.Run())` instructs the program that, once the tests are run, it should exit.
+
+Each table will have its own series of queries that will make use of the `testify` package. This library allows the use of the `require` function.
