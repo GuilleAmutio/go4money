@@ -12,8 +12,10 @@ migratedown:
 
 sqlc:
 	sqlc generate
+test:
+	go test -v -cover -coverprofile=coverage/coverage.out ./...
 
 dbtest:
-	go test -v -cover ./db/sqlc
+	go test -v -cover -coverprofile=coverage/dbcoverage.out ./db/sqlc
 
-.PHONY.: postgres createdb dropdb migrateup migratedown sqlc dbtest
+.PHONY.: postgres createdb dropdb migrateup migratedown sqlc test dbtest
