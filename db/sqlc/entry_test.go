@@ -2,7 +2,6 @@ package db
 
 import (
 	"context"
-	"math/rand"
 	"testing"
 	"time"
 
@@ -11,20 +10,10 @@ import (
 )
 
 func createRandomEntry(t *testing.T) Entry {
-	arg1 := ListAccountsParams{
-		Limit:  10,
-		Offset: 0,
-	}
-
-	accounts, err := testQueries.ListAccounts(context.Background(), arg1)
-	require.NoError(t, err)
-
-	// Select random ID from
-	k := rand.Int63n(10 - 1)
-	accountID := accounts[k].ID
+	account := createRandomAccount(t)
 
 	arg2 := CreateEntryParams{
-		AccountID: accountID,
+		AccountID: account.ID,
 		Amount:    util.RandomMoney(),
 	}
 
@@ -59,6 +48,16 @@ func TestGetEntry(t *testing.T) {
 	require.WithinDuration(t, entry1.CreatedAt, entry2.CreatedAt, time.Second)
 }
 
+func TestListAllEntries(t *testing.T) {
+	entry := createRandomEntry(t)
+
+	entries, err := testQueries.ListAllEntries(context.Background())
+
+	require.NoError(t, err)
+	require.NotEmpty(t, entries)
+	require.Contains(t, entries, entry)
+}
+
 func TestListEntries(t *testing.T) {
 	for i := 0; i < 10; i++ {
 		createRandomEntry(t)
@@ -81,7 +80,7 @@ func TestListEntries(t *testing.T) {
 func TestListEntriesBetweenDates(t *testing.T) {
 	time1 := time.Now()
 
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 5; i++ {
 		createRandomEntry(t)
 	}
 
@@ -94,7 +93,7 @@ func TestListEntriesBetweenDates(t *testing.T) {
 
 	entries, err := testQueries.ListEntriesBetweenDates(context.Background(), arg)
 	require.NoError(t, err)
-	require.Len(t, entries, 10)
+	require.Len(t, entries, 5)
 
 	for _, entry := range entries {
 		require.GreaterOrEqual(t, entry.CreatedAt, time1)
