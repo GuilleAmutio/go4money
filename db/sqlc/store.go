@@ -98,6 +98,7 @@ func (store *Store) TransferTx(ctx context.Context, arg TransferTxParams) (Trans
 			return err
 		}
 
+		// Substract amount fromAccount
 		result.FromAccount, err = q.AddAccountBalance(ctx, AddAccountBalanceParams{
 			ID:      arg.FromAccountID,
 			Balance: -arg.Amount,
@@ -106,6 +107,7 @@ func (store *Store) TransferTx(ctx context.Context, arg TransferTxParams) (Trans
 			return err
 		}
 
+		// Add amount toAccount
 		result.ToAccount, err = q.AddAccountBalance(ctx, AddAccountBalanceParams{
 			ID:      arg.ToAccountID,
 			Balance: arg.Amount,
