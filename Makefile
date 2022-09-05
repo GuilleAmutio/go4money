@@ -10,6 +10,10 @@ migrateup:
 migratedown:
 	migrate -path db/migration -database "postgresql://postgres:mysecretpassword@localhost:5432/go4money?sslmode=disable" -verbose down
 
+resetdb:
+	migrate -path db/migration -database "postgresql://postgres:mysecretpassword@localhost:5432/go4money?sslmode=disable" -verbose down
+	migrate -path db/migration -database "postgresql://postgres:mysecretpassword@localhost:5432/go4money?sslmode=disable" -verbose up
+
 sqlc:
 	sqlc generate
 test:
@@ -18,4 +22,4 @@ test:
 dbtest:
 	go test -v -cover -coverprofile=coverage/dbcoverage.out ./db/sqlc
 
-.PHONY.: postgres createdb dropdb migrateup migratedown sqlc test dbtest
+.PHONY.: postgres createdb dropdb migrateup migratedown resetdb sqlc test dbtest
