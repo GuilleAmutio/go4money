@@ -67,7 +67,7 @@ func (q *Queries) ListAllTransfers(ctx context.Context) ([]Transfer, error) {
 		return nil, err
 	}
 	defer rows.Close()
-	var items []Transfer
+	items := []Transfer{}
 	for rows.Next() {
 		var i Transfer
 		if err := rows.Scan(
@@ -108,7 +108,7 @@ func (q *Queries) ListTransfers(ctx context.Context, arg ListTransfersParams) ([
 		return nil, err
 	}
 	defer rows.Close()
-	var items []Transfer
+	items := []Transfer{}
 	for rows.Next() {
 		var i Transfer
 		if err := rows.Scan(
@@ -147,7 +147,7 @@ func (q *Queries) ListTransfersBetweenDates(ctx context.Context, arg ListTransfe
 		return nil, err
 	}
 	defer rows.Close()
-	var items []Transfer
+	items := []Transfer{}
 	for rows.Next() {
 		var i Transfer
 		if err := rows.Scan(
@@ -182,7 +182,7 @@ func (q *Queries) ListTransfersFromAccount(ctx context.Context, fromAccountID in
 		return nil, err
 	}
 	defer rows.Close()
-	var items []Transfer
+	items := []Transfer{}
 	for rows.Next() {
 		var i Transfer
 		if err := rows.Scan(
@@ -217,7 +217,7 @@ func (q *Queries) ListTransfersToAccount(ctx context.Context, toAccountID int64)
 		return nil, err
 	}
 	defer rows.Close()
-	var items []Transfer
+	items := []Transfer{}
 	for rows.Next() {
 		var i Transfer
 		if err := rows.Scan(
