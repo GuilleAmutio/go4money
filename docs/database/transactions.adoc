@@ -50,4 +50,4 @@ func (store *Store) execTx(ctx context.Context, fn func(*Queries) error) error {
 
 Define a function for each transaction that can be executed and the actions to perform in the database.
 
-### Database deadlock && Test-driven-development
+### Database deadlock

@@ -98,26 +98,39 @@ func (store *Store) TransferTx(ctx context.Context, arg TransferTxParams) (Trans
 			return err
 		}
 
-		// Substract amount fromAccount
-		result.FromAccount, err = q.AddAccountBalance(ctx, AddAccountBalanceParams{
-			ID:      arg.FromAccountID,
-			Balance: -arg.Amount,
-		})
-		if err != nil {
-			return err
-		}
-
-		// Add amount toAccount
-		result.ToAccount, err = q.AddAccountBalance(ctx, AddAccountBalanceParams{
-			ID:      arg.ToAccountID,
-			Balance: arg.Amount,
-		})
-		if err != nil {
-			return err
+		// Avoid a deadlock scenario by ordering the queries
+		if arg.FromAccountID < arg.ToAccountID {
+			// Update FromAccount before ToAccount
+			result.FromAccount, result.ToAccount, _ = addMoney(ctx, q, arg.FromAccountID, -arg.Amount, arg.ToAccountID, arg.Amount)
+		} else {
+			// Update ToAccount before FromAccount
+			result.ToAccount, result.FromAccount, _ = addMoney(ctx, q, arg.ToAccountID, arg.Amount, arg.FromAccountID, -arg.Amount)
 		}
 
 		return nil
 	})
 
 	return result, err
+}
+
+func addMoney(ctx context.Context, q *Queries, accountID1 int64, balance1 int64, accountID2 int64, balance2 int64) (account1 Account, account2 Account, err error) {
+	account1, err = q.AddAccountBalance(ctx, AddAccountBalanceParams{
+		ID:      accountID1,
+		Balance: balance1,
+	})
+	if err != nil {
+		// No neeed to specify the returned values as named returns are used
+		return
+	}
+
+	account2, err = q.AddAccountBalance(ctx, AddAccountBalanceParams{
+		ID:      accountID2,
+		Balance: balance2,
+	})
+	if err != nil {
+		// No neeed to specify the returned values as named returns are used
+		return
+	}
+
+	return
 }
