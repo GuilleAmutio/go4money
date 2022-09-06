@@ -50,4 +50,19 @@ func (store *Store) execTx(ctx context.Context, fn func(*Queries) error) error {
 
 Define a function for each transaction that can be executed and the actions to perform in the database.
 
-### Database deadlock
+### Database Deadlock
+
+### Isolation levels
+
+From low to high:
+* Read uncommitted: Can see data written by uncommitted transaction
+* Read committed: Only see data written by committed transaction
+* Repeteable read: Same read query always returns same result
+* Serializable: Can achieve same result if execute transactions serially in some order instead of concurrently
+
+### Read Phenomena
+
+* Dirty read: A transaction read data written by other concurrent uncommitted transaction
+* Non-repeteable read: A transaction reads the same row twice and sees different value because been it has been modified by other committed transaction
+* Phantom read: A transaction re-executes a query to find rows that satisfy a condition and sees a different set of rows, due to changes by other committed transaction
+* Serialization anomaly: The result of a group of concurrent committed transactions is impossible to achieve if we try to run them sequentially in any order without overlapping.
