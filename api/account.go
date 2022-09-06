@@ -68,7 +68,7 @@ type deleteAccountRequest struct {
 	ID int64 `uri:"id" binding:"required,min=1"`
 }
 
-type responseDeleteAccountRequest struct {
+type deleteAccountResponse struct {
 	Deleted bool
 	Account db.Account
 }
@@ -96,7 +96,7 @@ func (server *Server) deleteAccount(ctx *gin.Context) {
 		return
 	}
 
-	res := responseDeleteAccountRequest{
+	res := deleteAccountResponse{
 		Deleted: true,
 		Account: account,
 	}
