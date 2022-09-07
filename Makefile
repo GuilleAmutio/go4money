@@ -26,4 +26,7 @@ dbtest:
 server:
 	go run main.go
 
-.PHONY.: postgres createdb dropdb migrateup migratedown resetdb sqlc test dbtest server
+mock:
+	mockgen --package mockdb --destination db/mock/store.go github.com/guilleamutio/go4money/db/sqlc Store
+
+.PHONY.: postgres createdb dropdb migrateup migratedown resetdb sqlc test dbtest server mock
