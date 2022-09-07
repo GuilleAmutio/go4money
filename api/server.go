@@ -2,6 +2,7 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/guilleamutio/go4money/api/account"
 	db "github.com/guilleamutio/go4money/db/sqlc"
 )
 
@@ -15,12 +16,7 @@ func NewServer(store *db.Store) *Server {
 	server := &Server{store: store}
 	router := gin.Default()
 
-	router.POST("/accounts/createAccount", server.createAccount)
-	router.PUT("/accounts/updateAccount", server.updateAccount)
-	router.DELETE("/accounts/deleteAccount/:id", server.deleteAccount)
-	router.GET("/accounts/:id", server.getAccount)
-	router.GET("/accounts/listAccounts", server.listAccounts)
-	router.GET("/accounts/listAllAccounts", server.listAllAccounts)
+	registerHandlers(store, router)
 
 	server.router = router
 
@@ -31,6 +27,11 @@ func (server *Server) Start(address string) error {
 	return server.router.Run(address)
 }
 
-func errorResponse(err error) gin.H {
-	return gin.H{"error": err.Error()}
+func registerHandlers(store *db.Store, router *gin.Engine) {
+
+	routerGroup := router.Group("/accounts")
+	{
+		account.RegisterAccountHandlers(store, routerGroup)
+	}
+
 }
