@@ -11,6 +11,7 @@ import (
 )
 
 func main() {
+	// Load env variables
 	config, err := util.LoadConfig(".")
 	if err != nil {
 		log.Fatal("cannot load config:", err)
@@ -21,9 +22,11 @@ func main() {
 		log.Fatal("Error while connecting to db:", err)
 	}
 
+	// Create server
 	store := db.NewStore(conn)
 	server := api.NewServer(store)
 
+	// Start Server
 	err = server.Start(config.ServerAddress)
 	if err != nil {
 		log.Fatal("Error while starting webserver:", err)
