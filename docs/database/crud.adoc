@@ -19,3 +19,7 @@ In Go, test are defined by adding `_test` at the end of the name of the file. Th
 Each table will have its own series of queries that will make use of the `testify` package. This library allows the use of the `require` function.
 
 Test have to be created for query.
+
+## Mocks
+
+Use https://github.com/golang/mock[GoMock] package to mock DB tests
