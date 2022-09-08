@@ -2,6 +2,8 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
+	"github.com/go-playground/validator/v10"
 	db "github.com/guilleamutio/go4money/db/sqlc"
 )
 
@@ -15,12 +17,18 @@ func NewServer(store db.Store) *Server {
 	server := &Server{store: store}
 	router := gin.Default()
 
+	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
+		v.RegisterValidation("currency", validCurrency)
+	}
+
 	router.POST("/accounts/createAccount", server.createAccount)
 	router.PUT("/accounts/updateAccount", server.updateAccount)
 	router.DELETE("/accounts/deleteAccount/:id", server.deleteAccount)
 	router.GET("/accounts/:id", server.getAccount)
 	router.GET("/accounts/listAccounts", server.listAccounts)
 	router.GET("/accounts/listAllAccounts", server.listAllAccounts)
+
+	router.POST("/transfers/createTransfer", server.createTransfer)
 
 	server.router = router
 
