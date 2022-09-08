@@ -29,7 +29,3 @@ ORDER BY id;
 SELECT * FROM transfers
 WHERE to_account_id = $1
 ORDER BY id;
-
--- name: ListTransfersBetweenDates :many
-SELECT * FROM transfers
-WHERE created_at >= $1 AND created_at <= $2;

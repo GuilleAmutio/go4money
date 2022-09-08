@@ -244,21 +244,6 @@ func (mr *MockStoreMockRecorder) ListEntries(arg0, arg1 interface{}) *gomock.Cal
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListEntries", reflect.TypeOf((*MockStore)(nil).ListEntries), arg0, arg1)
 }
 
-// ListEntriesBetweenDates mocks base method.
-func (m *MockStore) ListEntriesBetweenDates(arg0 context.Context, arg1 db.ListEntriesBetweenDatesParams) ([]db.Entry, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ListEntriesBetweenDates", arg0, arg1)
-	ret0, _ := ret[0].([]db.Entry)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// ListEntriesBetweenDates indicates an expected call of ListEntriesBetweenDates.
-func (mr *MockStoreMockRecorder) ListEntriesBetweenDates(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListEntriesBetweenDates", reflect.TypeOf((*MockStore)(nil).ListEntriesBetweenDates), arg0, arg1)
-}
-
 // ListTransfers mocks base method.
 func (m *MockStore) ListTransfers(arg0 context.Context, arg1 db.ListTransfersParams) ([]db.Transfer, error) {
 	m.ctrl.T.Helper()
@@ -272,21 +257,6 @@ func (m *MockStore) ListTransfers(arg0 context.Context, arg1 db.ListTransfersPar
 func (mr *MockStoreMockRecorder) ListTransfers(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListTransfers", reflect.TypeOf((*MockStore)(nil).ListTransfers), arg0, arg1)
-}
-
-// ListTransfersBetweenDates mocks base method.
-func (m *MockStore) ListTransfersBetweenDates(arg0 context.Context, arg1 db.ListTransfersBetweenDatesParams) ([]db.Transfer, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ListTransfersBetweenDates", arg0, arg1)
-	ret0, _ := ret[0].([]db.Transfer)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// ListTransfersBetweenDates indicates an expected call of ListTransfersBetweenDates.
-func (mr *MockStoreMockRecorder) ListTransfersBetweenDates(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListTransfersBetweenDates", reflect.TypeOf((*MockStore)(nil).ListTransfersBetweenDates), arg0, arg1)
 }
 
 // ListTransfersFromAccount mocks base method.

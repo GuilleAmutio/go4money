@@ -7,7 +7,6 @@ package db
 
 import (
 	"context"
-	"time"
 )
 
 const createTransfer = `-- name: CreateTransfer :one
@@ -104,45 +103,6 @@ type ListTransfersParams struct {
 
 func (q *Queries) ListTransfers(ctx context.Context, arg ListTransfersParams) ([]Transfer, error) {
 	rows, err := q.db.QueryContext(ctx, listTransfers, arg.Limit, arg.Offset)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	items := []Transfer{}
-	for rows.Next() {
-		var i Transfer
-		if err := rows.Scan(
-			&i.ID,
-			&i.FromAccountID,
-			&i.ToAccountID,
-			&i.Amount,
-			&i.CreatedAt,
-		); err != nil {
-			return nil, err
-		}
-		items = append(items, i)
-	}
-	if err := rows.Close(); err != nil {
-		return nil, err
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-	return items, nil
-}
-
-const listTransfersBetweenDates = `-- name: ListTransfersBetweenDates :many
-SELECT id, from_account_id, to_account_id, amount, created_at FROM transfers
-WHERE created_at >= $1 AND created_at <= $2
-`
-
-type ListTransfersBetweenDatesParams struct {
-	CreatedAt   time.Time `json:"created_at"`
-	CreatedAt_2 time.Time `json:"created_at_2"`
-}
-
-func (q *Queries) ListTransfersBetweenDates(ctx context.Context, arg ListTransfersBetweenDatesParams) ([]Transfer, error) {
-	rows, err := q.db.QueryContext(ctx, listTransfersBetweenDates, arg.CreatedAt, arg.CreatedAt_2)
 	if err != nil {
 		return nil, err
 	}

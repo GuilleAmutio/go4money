@@ -142,27 +142,3 @@ func TestListTransfersToAccount(t *testing.T) {
 		require.Equal(t, transfer.ToAccountID, account2.ID)
 	}
 }
-
-func TestListTransfersBetweenDates(t *testing.T) {
-	time1 := time.Now()
-
-	for i := 0; i < 5; i++ {
-		createRandomTransfer(t)
-	}
-
-	time2 := time.Now()
-
-	arg := ListTransfersBetweenDatesParams{
-		CreatedAt:   time1,
-		CreatedAt_2: time2,
-	}
-
-	transfers, err := testQueries.ListTransfersBetweenDates(context.Background(), arg)
-	require.NoError(t, err)
-	require.Len(t, transfers, 5)
-
-	for _, entry := range transfers {
-		require.GreaterOrEqual(t, entry.CreatedAt, time1)
-		require.LessOrEqual(t, entry.CreatedAt, time2)
-	}
-}

@@ -18,7 +18,3 @@ SELECT * FROM entries
 ORDER BY id
 LIMIT $1
 OFFSET $2;
-
--- name: ListEntriesBetweenDates :many
-SELECT * FROM entries
-WHERE created_at >= $1 AND created_at <= $2;

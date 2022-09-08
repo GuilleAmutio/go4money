@@ -76,27 +76,3 @@ func TestListEntries(t *testing.T) {
 		require.NotEmpty(t, account)
 	}
 }
-
-func TestListEntriesBetweenDates(t *testing.T) {
-	time1 := time.Now()
-
-	for i := 0; i < 5; i++ {
-		createRandomEntry(t)
-	}
-
-	time2 := time.Now()
-
-	arg := ListEntriesBetweenDatesParams{
-		CreatedAt:   time1,
-		CreatedAt_2: time2,
-	}
-
-	entries, err := testQueries.ListEntriesBetweenDates(context.Background(), arg)
-	require.NoError(t, err)
-	require.Len(t, entries, 5)
-
-	for _, entry := range entries {
-		require.GreaterOrEqual(t, entry.CreatedAt, time1)
-		require.LessOrEqual(t, entry.CreatedAt, time2)
-	}
-}

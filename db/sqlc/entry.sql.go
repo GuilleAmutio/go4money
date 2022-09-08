@@ -7,7 +7,6 @@ package db
 
 import (
 	"context"
-	"time"
 )
 
 const createEntry = `-- name: CreateEntry :one
@@ -99,44 +98,6 @@ type ListEntriesParams struct {
 
 func (q *Queries) ListEntries(ctx context.Context, arg ListEntriesParams) ([]Entry, error) {
 	rows, err := q.db.QueryContext(ctx, listEntries, arg.Limit, arg.Offset)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	items := []Entry{}
-	for rows.Next() {
-		var i Entry
-		if err := rows.Scan(
-			&i.ID,
-			&i.AccountID,
-			&i.Amount,
-			&i.CreatedAt,
-		); err != nil {
-			return nil, err
-		}
-		items = append(items, i)
-	}
-	if err := rows.Close(); err != nil {
-		return nil, err
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-	return items, nil
-}
-
-const listEntriesBetweenDates = `-- name: ListEntriesBetweenDates :many
-SELECT id, account_id, amount, created_at FROM entries
-WHERE created_at >= $1 AND created_at <= $2
-`
-
-type ListEntriesBetweenDatesParams struct {
-	CreatedAt   time.Time `json:"created_at"`
-	CreatedAt_2 time.Time `json:"created_at_2"`
-}
-
-func (q *Queries) ListEntriesBetweenDates(ctx context.Context, arg ListEntriesBetweenDatesParams) ([]Entry, error) {
-	rows, err := q.db.QueryContext(ctx, listEntriesBetweenDates, arg.CreatedAt, arg.CreatedAt_2)
 	if err != nil {
 		return nil, err
 	}
