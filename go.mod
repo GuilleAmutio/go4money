@@ -4,10 +4,13 @@ go 1.19
 
 require (
 	github.com/golang/mock v1.6.0
+	github.com/google/uuid v1.1.2
 	github.com/lib/pq v1.10.6
 	github.com/spf13/viper v1.13.0
 	github.com/stretchr/testify v1.8.0
 )
+
+require github.com/golang-jwt/jwt/v4 v4.4.2
 
 require (
 	github.com/fsnotify/fsnotify v1.5.4 // indirect
@@ -34,7 +37,7 @@ require (
 	github.com/ugorji/go/codec v1.2.7 // indirect
 	golang.org/x/crypto v0.0.0-20220829220503-c86fa9a7ed90
 	golang.org/x/net v0.0.0-20220826154423-83b083e8dc8b // indirect
-	golang.org/x/sys v0.0.0-20220829200755-d48e67d00261 // indirect
+	golang.org/x/sys v0.0.0-20220909162455-aba9fc2a8ff2 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
