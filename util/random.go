@@ -13,12 +13,12 @@ func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
-// Generate random number
+// RandomInt Generate random number
 func RandomInt(min, max int64) int64 {
 	return rand.Int63n(max - min + 1)
 }
 
-// Generate random string where letters are picked up randomly from the aplhabet
+// RandomString Generate random string where letters are picked up randomly from the aplhabet
 func RandomString(n int) string {
 	var sb strings.Builder
 	k := len(alphabet)
@@ -31,17 +31,17 @@ func RandomString(n int) string {
 	return sb.String()
 }
 
-// Generate random name for owner
+// RandomOwner Generate random name for owner
 func RandomOwner() string {
 	return RandomString(6)
 }
 
-// Generate random amount of money
+// RandomMoney Generate random amount of money
 func RandomMoney() int64 {
 	return RandomInt(0, 1000)
 }
 
-// Select currency randomly
+// RandomCurrency Select currency randomly
 func RandomCurrency() string {
 	currencies := []string{EUR, USD, CAD}
 	n := len(currencies)
@@ -49,6 +49,7 @@ func RandomCurrency() string {
 	return currencies[rand.Intn(n)]
 }
 
+// RandomEmail Generate random email for user
 func RandomEmail() string {
 	return fmt.Sprintf("%s@email.com", RandomString(6))
 }
