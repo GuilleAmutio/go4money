@@ -2,6 +2,8 @@ package api
 
 import (
 	"database/sql"
+	"github.com/guilleamutio/go4money/token"
+	"github.com/pkg/errors"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -22,8 +24,9 @@ func (server *Server) createAccount(ctx *gin.Context) {
 		return
 	}
 
+	authPayload := ctx.MustGet(authPayloadKey).(*token.Payload)
 	arg := db.CreateAccountParams{
-		Owner:    req.Owner,
+		Owner:    authPayload.Username,
 		Balance:  0,
 		Currency: req.Currency,
 	}
@@ -68,6 +71,13 @@ func (server *Server) updateAccount(ctx *gin.Context) {
 		return
 	}
 
+	authPayload := ctx.MustGet(authPayloadKey).(*token.Payload)
+	if authPayload.Username != account.Owner {
+		err := errors.New("account doesn't belong to the auth user")
+		ctx.JSON(http.StatusUnauthorized, errorResponse(err))
+		return
+	}
+
 	ctx.JSON(http.StatusOK, account)
 }
 
@@ -104,6 +114,13 @@ func (server *Server) deleteAccount(ctx *gin.Context) {
 		return
 	}
 
+	authPayload := ctx.MustGet(authPayloadKey).(*token.Payload)
+	if authPayload.Username != account.Owner {
+		err := errors.New("account doesn't belong to the auth user")
+		ctx.JSON(http.StatusUnauthorized, errorResponse(err))
+		return
+	}
+
 	res := deleteAccountResponse{
 		Deleted: true,
 		Account: account,
@@ -131,6 +148,13 @@ func (server *Server) getAccount(ctx *gin.Context) {
 			return
 		}
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+
+	authPayload := ctx.MustGet(authPayloadKey).(*token.Payload)
+	if authPayload.Username != account.Owner {
+		err := errors.New("account doesn't belong to the auth user")
+		ctx.JSON(http.StatusUnauthorized, errorResponse(err))
 		return
 	}
 
