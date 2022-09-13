@@ -1,2 +1,5 @@
 # Exclude coverage report
 /coverage
+
+# Exclude IDE files
+/.idea
