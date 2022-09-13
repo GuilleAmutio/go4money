@@ -1,37 +1,30 @@
 package main
 
 import (
-	"database/sql"
-	"log"
-
-	"github.com/guilleamutio/go4money/api"
-	db "github.com/guilleamutio/go4money/db/sqlc"
+	"context"
+	"github.com/guilleamutio/go4money/ent"
 	"github.com/guilleamutio/go4money/util"
 	_ "github.com/lib/pq"
+	"log"
 )
 
 func main() {
 	// Load env variables
 	config, err := util.LoadConfig(".")
 	if err != nil {
-		log.Fatal("cannot load config:", err)
-	}
-	// Database connections
-	conn, err := sql.Open(config.DBDriver, config.DBSource)
-	if err != nil {
-		log.Fatal("Error while connecting to db:", err)
+		log.Fatal("failed loading config", err)
 	}
 
-	// Create server
-	store := db.NewStore(conn)
-	server, err := api.NewServer(config, store)
+	// Open connection with database
+	client, err := ent.Open(config.DBDriver, config.DBSource)
 	if err != nil {
-		log.Fatal("Error while creating the server:", err)
+		log.Fatalf("failed opening connection to postgres: %v", err)
 	}
 
-	// Start Server
-	err = server.Start(config.ServerAddress)
-	if err != nil {
-		log.Fatal("Error while starting webserver:", err)
+	// Run the auto migration tool.
+	if err := client.Schema.Create(context.Background()); err != nil {
+		log.Fatalf("failed creating schema resources: %v", err)
 	}
+
+	// Start server
 }

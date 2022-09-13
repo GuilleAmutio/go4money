@@ -1,7 +1,0 @@
-# Migrations
-
-The database used is PostgreSQL. The schema will be generated using https://dbdiagram.io[dbdiagram.io].
-
-To generate the migrations we will use https://github.com/golang-migrate/migrate[Go Migrate].
-
-The ORM used will be SQLC, however GORM and SQLX is a great alternative
