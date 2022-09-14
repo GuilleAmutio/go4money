@@ -1,10 +1,9 @@
 package main
 
 import (
-	"context"
-	"github.com/guilleamutio/go4money/ent"
+	"github.com/guilleamutio/go4money/cmd"
+	"github.com/guilleamutio/go4money/models"
 	"github.com/guilleamutio/go4money/util"
-	_ "github.com/lib/pq"
 	"log"
 )
 
@@ -15,16 +14,18 @@ func main() {
 		log.Fatal("failed loading config", err)
 	}
 
-	// Open connection with database
-	client, err := ent.Open(config.DBDriver, config.DBSource)
+	// Open DB connection
+	db, err := models.OpenDatabase(config)
 	if err != nil {
-		log.Fatalf("failed opening connection to postgres: %v", err)
+		log.Fatal("failed while connecting to the database", err)
 	}
 
-	// Run the auto migration tool.
-	if err := client.Schema.Create(context.Background()); err != nil {
-		log.Fatalf("failed creating schema resources: %v", err)
-	}
+	// Create webserver
+	server := cmd.NewServer(db)
 
-	// Start server
+	// Run webserver
+	err = server.StartServer(config.ServerAddress)
+	if err != nil {
+		log.Fatal("failed while starting the server", err)
+	}
 }
