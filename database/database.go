@@ -1,4 +1,4 @@
-package models
+package database
 
 import (
 	"github.com/guilleamutio/go4money/util"

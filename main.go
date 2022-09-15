@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/guilleamutio/go4money/cmd"
-	"github.com/guilleamutio/go4money/models"
+	"github.com/guilleamutio/go4money/database"
 	"github.com/guilleamutio/go4money/util"
 	"log"
 )
@@ -15,7 +15,7 @@ func main() {
 	}
 
 	// Open DB connection
-	db, err := models.OpenDatabase(config)
+	db, err := database.OpenDatabase(config)
 	if err != nil {
 		log.Fatal("failed while connecting to the database", err)
 	}

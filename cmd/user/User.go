@@ -1,9 +1,6 @@
-package models
-
-import "gorm.io/gorm"
+package user
 
 type User struct {
-	gorm.Model
 	Username string
 	Password string
 }

@@ -15,7 +15,9 @@ func NewServer(db *gorm.DB) *Server {
 	server := &Server{db: db}
 	router := gin.Default()
 
-	registerHandlers(db, router)
+	userCtrl := user.ConfigureDependencies(db)
+
+	registerHandlers(userCtrl, router)
 
 	server.router = router
 
@@ -26,9 +28,10 @@ func (server *Server) StartServer(address string) error {
 	return server.router.Run(address)
 }
 
-func registerHandlers(db *gorm.DB, router *gin.Engine) {
+func registerHandlers(usrCtrl user.UserController, router *gin.Engine) {
 	routerGroup := router.Group("/users")
 	{
-		user.RegisterUserHandlers(db, routerGroup)
+		usrCtrl.RegisterUserRoutes(routerGroup)
 	}
+
 }
