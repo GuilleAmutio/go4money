@@ -9,6 +9,12 @@ type UserService struct {
 	UserRepository UserRepository
 }
 
+func NewUserService(userRepo UserRepository) UserService {
+	return UserService{
+		UserRepository: userRepo,
+	}
+}
+
 func (userService *UserService) createUser(ctx *gin.Context) {
 	// HACER PUTA MIERDA DE LOGICA DE APLICACION
 	ctx.JSON(http.StatusOK, "He sido invocado por mis cojones")
@@ -18,7 +24,7 @@ func (userService *UserService) createUser(ctx *gin.Context) {
 		Password: "mysecret",
 	}
 
-	userService.UserRepository.HastaLaPolla(user)
+	userService.UserRepository.createUser(user)
 
 	ctx.JSON(http.StatusOK, "He terminado")
 }

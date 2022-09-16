@@ -15,7 +15,7 @@ func NewServer(db *gorm.DB) *Server {
 	server := &Server{db: db}
 	router := gin.Default()
 
-	userCtrl := user.ConfigureDependencies(db)
+	userCtrl := user.InitializeDependencies(db)
 
 	registerHandlers(userCtrl, router)
 
