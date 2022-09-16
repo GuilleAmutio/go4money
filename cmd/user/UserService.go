@@ -2,6 +2,7 @@ package user
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/guilleamutio/go4money/util"
 	"net/http"
 )
 
@@ -19,21 +20,29 @@ func NewUserService(userRepo UserRepository) UserService {
 // @Summary createUser
 // @Schemes
 // @Description create user in database
+// @Param        user  body      User  true  "Create User"
 // @Tags USERS
 // @Accept json
 // @Produce json
 // @Success 200 {string} Finished
-// @Router /api/v1/users/createUser [get]
+// @Router /api/v1/users/createUser [post]
 func (userService *UserService) createUser(ctx *gin.Context) {
-	// HACER PUTA MIERDA DE LOGICA DE APLICACION
-	ctx.JSON(http.StatusOK, "He sido invocado por mis cojones")
-	// PEDIR AL DATA QUE REALIZA LA PUTA MIERDA DE TRANSACCION
-	user := User{
-		Username: "pabloMyGod",
-		Password: "mysecret",
+	var req createUserRequest
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, util.ErrorResponse(err))
+		return
 	}
 
-	userService.UserRepository.createUser(user)
+	user := User{
+		Username: req.Username,
+		Password: req.Password,
+	}
 
-	ctx.JSON(http.StatusOK, "He terminado")
+	err := userService.UserRepository.createUser(&user)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, util.ErrorResponse(err))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, user)
 }

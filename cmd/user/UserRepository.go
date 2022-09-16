@@ -15,6 +15,7 @@ func NewUserRepository(db *gorm.DB) UserRepository {
 	}
 }
 
-func (userRepo *UserRepository) createUser(user User) {
-	userRepo.Db.Create(&database.User{Username: user.Username, Password: user.Password})
+func (userRepo *UserRepository) createUser(user *User) error {
+	result := userRepo.Db.Create(&database.User{Username: user.Username, Password: user.Password})
+	return result.Error
 }

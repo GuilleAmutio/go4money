@@ -1,3 +1,11 @@
+definitions:
+  user.User:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
 host: localhost:8080
 info:
   contact:
@@ -13,10 +21,17 @@ info:
   version: "1.0"
 paths:
   /api/v1/users/createUser:
-    get:
+    post:
       consumes:
       - application/json
       description: create user in database
+      parameters:
+      - description: Create
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/user.User'
       produces:
       - application/json
       responses:
@@ -26,5 +41,5 @@ paths:
             type: string
       summary: createUser
       tags:
-      - user
+      - USERS
 swagger: "2.0"

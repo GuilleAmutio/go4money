@@ -15,5 +15,5 @@ func NewUserController(userSvc UserService) UserController {
 }
 
 func (userController UserController) RegisterUserRoutes(routerGroup *gin.RouterGroup) {
-	routerGroup.GET("/createUser", userController.UserService.createUser)
+	routerGroup.POST("/createUser", userController.UserService.createUser)
 }
