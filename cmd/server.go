@@ -3,6 +3,9 @@ package cmd
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/guilleamutio/go4money/cmd/user"
+	_ "github.com/guilleamutio/go4money/docs"
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"gorm.io/gorm"
 )
 
@@ -28,10 +31,15 @@ func (server *Server) StartServer(address string) error {
 	return server.router.Run(address)
 }
 
-func registerHandlers(usrCtrl user.UserController, router *gin.Engine) {
-	routerGroup := router.Group("/users")
+func registerHandlers(userCtrl user.UserController, router *gin.Engine) {
+	routerGroup := router.Group("/api/v1")
 	{
-		usrCtrl.RegisterUserRoutes(routerGroup)
+		accRG := routerGroup.Group("/users")
+		{
+			userCtrl.RegisterUserRoutes(accRG)
+		}
+
 	}
 
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 }
